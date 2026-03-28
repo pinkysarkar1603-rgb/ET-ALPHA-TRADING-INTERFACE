@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ET Alpha | Product Dossier</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0d1b31;
+      --panel-2: #122541;
+      --ink: #f8fafc;
+      --muted: #9fb0c9;
+      --line: rgba(173, 194, 226, 0.16);
+      --gold: #ffbf00;
+      --gold-2: #ffd95a;
+      --emerald: #1dd78a;
+      --rose: #ff5f76;
+      --sky: #55c2ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(85, 194, 255, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(255, 191, 0, 0.18), transparent 28%),
+        linear-gradient(180deg, #08111f 0%, #0a1526 100%);
+      font-family: "Segoe UI", Arial, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      padding: 0;
+    }
+
+    .page {
+      min-height: 268mm;
+      padding: 16mm 14mm;
+      position: relative;
+      page-break-after: always;
+      overflow: hidden;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    .halo {
+      position: absolute;
+      inset: auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      filter: blur(32px);
+      opacity: 0.22;
+      pointer-events: none;
+    }
+
+    .halo.gold {
+      background: var(--gold);
+      top: -64px;
+      right: -48px;
+    }
+
+    .halo.blue {
+      background: var(--sky);
+      bottom: 36px;
+      left: -72px;
+    }
+
+    .kicker {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid rgba(255, 191, 0, 0.24);
+      border-radius: 999px;
+      color: var(--gold-2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: rgba(255, 191, 0, 0.08);
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1.02;
+      margin-top: 18px;
+      max-width: 620px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .subhead {
+      margin-top: 16px;
+      max-width: 640px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 18px;
+      margin-top: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(18, 37, 65, 0.92), rgba(8, 17, 31, 0.92));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.26);
+    }
+
+    .panel.soft {
+      background: linear-gradient(180deg, rgba(18, 37, 65, 0.82), rgba(13, 27, 49, 0.86));
+    }
+
+    .hero-bullets {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .hero-bullets div,
+    .metric,
+    .card,
+    .row-card,
+    .table-cell {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(10, 21, 38, 0.65);
+    }
+
+    .hero-bullets div {
+      padding: 14px 16px;
+    }
+
+    .hero-bullets strong,
+    .card strong,
+    .table-cell strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+      color: var(--ink);
+    }
+
+    .hero-bullets span,
+    .card p,
+    .table-cell p,
+    .small,
+    .body-copy {
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px 15px;
+      min-height: 110px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .metric .value {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 10px 0 8px;
+    }
+
+    .gold-text { color: var(--gold-2); }
+    .green-text { color: var(--emerald); }
+    .blue-text { color: var(--sky); }
+    .rose-text { color: var(--rose); }
+
+    .brand-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 22px;
+      padding: 12px 15px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(8, 17, 31, 0.64);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 16px;
+      min-height: 150px;
+    }
+
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .cards-3 .card {
+      min-height: 180px;
+    }
+
+    .image-frame {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #08111f;
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-frame img {
+      width: 100%;
+      display: block;
+    }
+
+    .caption {
+      padding: 12px 14px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--muted);
+      background: rgba(8, 17, 31, 0.84);
+      border-top: 1px solid var(--line);
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .feature-item {
+      border-left: 3px solid var(--gold);
+      padding: 10px 0 10px 12px;
+      background: rgba(8, 17, 31, 0.3);
+    }
+
+    .feature-item strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .feature-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .table-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .table-cell {
+      padding: 14px;
+      min-height: 138px;
+    }
+
+    .spotlight {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .spot {
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 191, 0, 0.1), rgba(13, 27, 49, 0.9));
+    }
+
+    .spot.blue {
+      background: linear-gradient(180deg, rgba(85, 194, 255, 0.12), rgba(13, 27, 49, 0.9));
+    }
+
+    .spot .big {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 10px 0 8px;
+    }
+
+    .timeline {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .row-card {
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .row-card .step {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold-2);
+      padding-top: 2px;
+    }
+
+    .footer-note {
+      position: absolute;
+      bottom: 18mm;
+      left: 14mm;
+      right: 14mm;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: rgba(159, 176, 201, 0.82);
+      border-top: 1px solid rgba(173, 194, 226, 0.12);
+      padding-top: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mini-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: #08111f;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow: 0 14px 32px rgba(255, 191, 0, 0.24);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(18, 37, 65, 0.7);
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <div class="halo gold"></div>
+    <div class="halo blue"></div>
+    <span class="kicker">AI Market Intelligence Dossier</span>
+
+    <div class="title-row">
+      <div class="mini-logo">ET</div>
+      <div>
+        <h1>ET Alpha turns stock research into a visual, explainable, all-in-one workflow.</h1>
+        <p class="subhead">
+          A stronger, cleaner, and more detailed presentation of the ET Alpha product vision:
+          live market context, chart intelligence, indicator-driven research, natural-language screening,
+          and multi-workflow decision support built for Indian equities.
+        </p>
+      </div>
+    </div>
+
+    <div class="hero-grid">
+      <div class="panel">
+        <h3>What the product is really trying to solve</h3>
+        <p class="body-copy">
+          Most retail market research is fragmented. One tab shows charts, another shows headlines,
+          another runs screeners, and none of them explain the move clearly. ET Alpha closes that gap
+          by combining live data, technical indicators, AI reasoning, event context, and interactive visual analysis
+          inside one product surface.
+        </p>
+
+        <div class="hero-bullets">
+          <div>
+            <strong>Unified intelligence layer</strong>
+            <span>Markets, Info, Intel, Radar, Bharat Intelligence, and DATA work as one system rather than disconnected pages.</span>
+          </div>
+          <div>
+            <strong>Made for interpretation, not just display</strong>
+            <span>Charts are interactive research surfaces with candle-click analysis, indicator overlays, and move explanation.</span>
+          </div>
+          <div>
+            <strong>Built for Indian market users</strong>
+            <span>The product stays India-first while remaining rich enough for advanced technical workflows and serious exploration.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-aside">
+        <div class="metrics">
+          <div class="metric">
+            <div class="label">Product Surfaces</div>
+            <div class="value gold-text">6</div>
+            <div class="small">Markets, Info, Intel, Radar, Bharat Intelligence, and DATA.</div>
+          </div>
+          <div class="metric">
+            <div class="label">Primary Promise</div>
+            <div class="value blue-text">Explain</div>
+            <div class="small">Not just what moved, but why it moved and how to inspect it.</div>
+          </div>
+          <div class="metric">
+            <div class="label">User Style</div>
+            <div class="value green-text">Retail + Pro</div>
+            <div class="small">Accessible for beginners without flattening the analytical depth.</div>
+          </div>
+          <div class="metric">
+            <div class="label">Core Strength</div>
+            <div class="value rose-text">Context</div>
+            <div class="small">Live market context, technical signals, factor mapping, and AI analysis in one loop.</div>
+          </div>
+        </div>
+
+        <div class="panel soft">
+          <h3>High-level positioning</h3>
+          <p class="body-copy">
+            ET Alpha is not a basic stock dashboard and not a generic chatbot wrapper.
+            It is a market co-pilot designed to help users scan, compare, interpret, and act faster.
+          </p>
+          <div class="badge-row">
+            <span class="badge">Live market layer</span>
+            <span class="badge">Chart intelligence</span>
+            <span class="badge">Indicator lab</span>
+            <span class="badge">AI reasoning</span>
+            <span class="badge">Natural language screener</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-strip">
+      <span>ET Alpha</span>
+      <span>AI Market Co-Pilot</span>
+      <span>Indian Equities Focus</span>
+      <span>Visual Intelligence Platform</span>
+    </div>
+
+    <div class="footer-note">
+      <span>ET Alpha Product Dossier</span>
+      <span>Page 01</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="halo gold"></div>
+    <span class="kicker">Core Product Areas</span>
+    <h2 style="margin-top:16px;">A multi-surface product instead of a single flat dashboard</h2>
+    <p class="subhead">
+      The strongest thing about ET Alpha is how many research layers it consolidates without losing clarity.
+      Each surface has a distinct job, but together they form a full market-analysis loop.
+    </p>
+
+    <div class="section-grid">
+      <div class="card">
+        <strong>Markets</strong>
+        <p>Live technical signal workspace for ticker scanning, conviction scoring, trend labeling, support and resistance, and AI-generated stock summaries.</p>
+      </div>
+      <div class="card">
+        <strong>Info</strong>
+        <p>Candlestick-first research surface for move blueprint, trade-map framing, and contextual explanation tied directly to visible price action.</p>
+      </div>
+      <div class="card">
+        <strong>Intel</strong>
+        <p>External-driver layer that separates raw price movement from domestic, global, sector, and company-linked context.</p>
+      </div>
+      <div class="card">
+        <strong>Radar</strong>
+        <p>Workflow-oriented workspace for compare, events, rotation, watchlists, alerts, impact analysis, and broader thematic exploration.</p>
+      </div>
+      <div class="card">
+        <strong>Bharat Intelligence</strong>
+        <p>India-first natural-language research and screening for users who want easier discovery than rigid screener filters.</p>
+      </div>
+      <div class="card">
+        <strong>DATA</strong>
+        <p>A dedicated indicator lab with searchable indicator catalog, spotlighting, fullscreen chart mode, and overlay-driven technical research.</p>
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card">
+        <strong>Why this structure works</strong>
+        <p>Users can move from scanning to explanation to comparison without switching products or losing context between tabs.</p>
+      </div>
+      <div class="card">
+        <strong>Why it feels richer</strong>
+        <p>The product combines dashboard utility, chart analysis, AI interpretation, and event research into a more serious market workflow.</p>
+      </div>
+      <div class="card">
+        <strong>Why it is catchier</strong>
+        <p>Instead of a plain terminal-like experience, ET Alpha leans into visually expressive research surfaces that still map to practical use.</p>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Product Architecture</span>
+      <span>Page 02</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="halo blue"></div>
+    <span class="kicker">Live Product Visuals</span>
+    <h2 style="margin-top:16px;">The interface already shows a strong visual direction</h2>
+    <p class="subhead">
+      The screenshots below reinforce that ET Alpha is more than a text-heavy finance tool. It has clear product identity,
+      dark-premium styling, and dedicated spaces for specific market workflows.
+    </p>
+
+    <div class="two-column">
+      <div class="image-frame">
+        <img src="../pdf-assets/login.png" alt="ET Alpha login screen" />
+        <div class="caption">
+          The login surface sets a premium product tone immediately. Strong contrast, confident branding, and a clean visual hierarchy make the product feel more finished and trustworthy.
+        </div>
+      </div>
+      <div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <strong>Brand identity is already visible</strong>
+            <span>The interface is visually consistent, dark-premium, and modern rather than looking like a generic admin dashboard.</span>
+          </div>
+          <div class="feature-item">
+            <strong>Designed like a product, not a demo page</strong>
+            <span>Input structure, card framing, spacing, and button treatment point toward an actual platform experience.</span>
+          </div>
+          <div class="feature-item">
+            <strong>Trust and seriousness matter in finance</strong>
+            <span>A refined product shell is not cosmetic only. It improves perceived credibility and reduces the “hacky prototype” feel.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-column" style="margin-top:18px;">
+      <div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <strong>Scenario impact modeling</strong>
+            <span>Portfolio simulation brings macro events into a user-facing decision flow instead of keeping them abstract.</span>
+          </div>
+          <div class="feature-item">
+            <strong>Directional impact framing</strong>
+            <span>The platform does not stop at a list of holdings. It estimates projected sensitivity and highlights likely portfolio shock.</span>
+          </div>
+          <div class="feature-item">
+            <strong>Immediate practical value</strong>
+            <span>This kind of feature makes the platform useful for “what if” thinking, not just passive observation.</span>
+          </div>
+        </div>
+      </div>
+      <div class="image-frame">
+        <img src="../pdf-assets/simulator.png" alt="Portfolio impact simulator" />
+        <div class="caption">
+          A portfolio impact simulator makes ET Alpha feel like a true market co-pilot. It turns macro or policy events into understandable user outcomes.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Visual Product Proof</span>
+      <span>Page 03</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="halo gold"></div>
+    <span class="kicker">Feature Deep Dive</span>
+    <h2 style="margin-top:16px;">Where ET Alpha becomes much more than a dashboard</h2>
+    <p class="subhead">
+      The product earns its “co-pilot” positioning through interaction depth. These are the areas that make the platform more detailed,
+      more memorable, and much harder to dismiss as a thin UI wrapper.
+    </p>
+
+    <div class="table-grid">
+      <div class="table-cell">
+        <strong>Live Market Dashboard</strong>
+        <p>Real fetched market context, indicator-backed signal logic, daily change, RSI, MACD context, momentum framing, and support-resistance awareness.</p>
+      </div>
+      <div class="table-cell">
+        <strong>Candlestick Intelligence</strong>
+        <p>Charts are actionable analysis surfaces. Users can switch time ranges, inspect candles, and connect visible movement with indicator state.</p>
+      </div>
+      <div class="table-cell">
+        <strong>Move Blueprint</strong>
+        <p>A standout idea: clicking a candle can produce a structured explanation of what may have driven that move and how to interpret it.</p>
+      </div>
+      <div class="table-cell">
+        <strong>Trade Map</strong>
+        <p>Framing price action into a trade-oriented structure helps move the product from observation to practical decision support.</p>
+      </div>
+      <div class="table-cell">
+        <strong>Indicator Catalog + Spotlight</strong>
+        <p>Searchable indicators with explanation layers reduce intimidation and help users learn advanced tools in context.</p>
+      </div>
+      <div class="table-cell">
+        <strong>Radar Workflows</strong>
+        <p>Signals, compare, events, rotation, alerts, watchlists, and explain flows support broader multi-stock and theme-level research.</p>
+      </div>
+    </div>
+
+    <div class="spotlight">
+      <div class="spot">
+        <div class="small">Why this is strong</div>
+        <div class="big">Explainability</div>
+        <div class="body-copy">ET Alpha consistently tries to bridge raw data and actual understanding. That makes it more useful to both first-time users and deeper technical researchers.</div>
+      </div>
+      <div class="spot blue">
+        <div class="small">Why this is memorable</div>
+        <div class="big">Interactivity</div>
+        <div class="body-copy">The product is not just read-only. It invites users to click, inspect, compare, enlarge, switch overlays, and run guided research workflows.</div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Detailed Value Layer</span>
+      <span>Page 04</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="halo blue"></div>
+    <span class="kicker">Chart Intelligence</span>
+    <h2 style="margin-top:16px;">The DATA page is one of the most compelling differentiators</h2>
+    <p class="subhead">
+      A searchable indicator lab connected directly to a fullscreen candlestick surface gives ET Alpha a far stronger research identity.
+      This is the kind of feature that makes the platform feel detailed, tactile, and advanced.
+    </p>
+
+    <div class="image-frame" style="margin-top:18px;">
+      <img src="../pdf-assets/chartlab.png" alt="Expanded chart lab with RSI" />
+      <div class="caption">
+        Fullscreen chart intelligence lets users explore indicators directly on the primary candlestick surface. That makes technical analysis more visual, more educational, and more usable.
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card">
+        <strong>Indicator-first exploration</strong>
+        <p>Users can search RSI, MACD, VWAP, Bollinger Bands, moving averages, and other indicators in a format that feels discoverable rather than hidden.</p>
+      </div>
+      <div class="card">
+        <strong>Immediate visual payoff</strong>
+        <p>Applying overlays directly to the center chart helps users understand each indicator by seeing it on the instrument, not by reading a separate text block.</p>
+      </div>
+      <div class="card">
+        <strong>AI technical narrative potential</strong>
+        <p>Combining indicator state with chart context gives ET Alpha a strong base for AI explanations that are specific instead of generic.</p>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>DATA Page Showcase</span>
+      <span>Page 05</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="halo gold"></div>
+    <span class="kicker">Why It Stands Out</span>
+    <h2 style="margin-top:16px;">ET Alpha wins by combining depth, accessibility, and presentation</h2>
+    <p class="subhead">
+      Most competing student or prototype builds over-index on one of three things: raw charts, generic AI text, or surface-level dashboards.
+      ET Alpha is stronger because it stretches across all three and still keeps a coherent product story.
+    </p>
+
+    <div class="section-grid">
+      <div class="card">
+        <strong>Better than a plain finance dashboard</strong>
+        <p>It adds event context, natural-language research, chart-based explanation, and indicator-aware reasoning instead of only listing numbers.</p>
+      </div>
+      <div class="card">
+        <strong>Better than a generic AI wrapper</strong>
+        <p>The AI layers are tied to stocks, candles, indicators, and real market context rather than detached freeform responses.</p>
+      </div>
+      <div class="card">
+        <strong>Better than a rigid screener</strong>
+        <p>Bharat Intelligence lowers the entry barrier with simpler query flows while still supporting serious exploration.</p>
+      </div>
+      <div class="card">
+        <strong>Better than a single-use chart page</strong>
+        <p>Radar, Intel, and DATA create a richer research loop that supports compare, inspect, explain, and track workflows.</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="row-card">
+        <div class="step">Step 01</div>
+        <div>
+          <strong>Scan quickly</strong>
+          <p class="body-copy">Start in Markets to find live setups, trend labels, support-resistance context, and conviction clues.</p>
+        </div>
+      </div>
+      <div class="row-card">
+        <div class="step">Step 02</div>
+        <div>
+          <strong>Inspect visually</strong>
+          <p class="body-copy">Move into Info or DATA to inspect candles, switch indicators, and understand technical structure more deeply.</p>
+        </div>
+      </div>
+      <div class="row-card">
+        <div class="step">Step 03</div>
+        <div>
+          <strong>Explain and compare</strong>
+          <p class="body-copy">Use Intel and Radar to map external drivers, compare opportunities, and evaluate broader market themes.</p>
+        </div>
+      </div>
+      <div class="row-card">
+        <div class="step">Step 04</div>
+        <div>
+          <strong>Research in natural language</strong>
+          <p class="body-copy">Use Bharat Intelligence when users want simpler discovery rather than rule-building inside a traditional screener.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Competitive Framing</span>
+      <span>Page 06</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="halo blue"></div>
+    <span class="kicker">Operational Snapshot</span>
+    <h2 style="margin-top:16px;">The build is also grounded in a practical working stack</h2>
+    <p class="subhead">
+      Beyond the concept, ET Alpha has a clear implementation story across frontend, backend, live data flows, and AI integration.
+      That matters because it makes the project feel credible, not merely aspirational.
+    </p>
+
+    <div class="section-grid">
+      <div class="card">
+        <strong>Frontend</strong>
+        <p>React, TypeScript, Vite, Framer Motion, and Recharts create an interface designed for responsive visual research and polished user flows.</p>
+      </div>
+      <div class="card">
+        <strong>Backend</strong>
+        <p>FastAPI and indicator computation utilities power the market data layer, aggregation routes, and signal logic behind the product.</p>
+      </div>
+      <div class="card">
+        <strong>AI Layer</strong>
+        <p>Groq-powered analysis supports technical narratives, explanation flows, and additional reasoning layers tied to market context.</p>
+      </div>
+      <div class="card">
+        <strong>Data Orientation</strong>
+        <p>Yahoo Finance endpoints and internal indicator engines contribute live and computed context rather than static placeholder experiences.</p>
+      </div>
+    </div>
+
+    <div class="spotlight">
+      <div class="spot">
+        <div class="small">Product takeaway</div>
+        <div class="big">Detailed</div>
+        <div class="body-copy">The project has enough feature density to support a full walkthrough, a serious demo, and multiple user journeys.</div>
+      </div>
+      <div class="spot blue">
+        <div class="small">Presentation takeaway</div>
+        <div class="big">Catchy</div>
+        <div class="body-copy">The visual system, product naming, and interactive surfaces already give ET Alpha strong presentation energy when packaged well.</div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <h3>Final positioning statement</h3>
+      <p class="body-copy">
+        ET Alpha is best described as an AI-powered market intelligence platform for Indian equities that merges live technical context,
+        chart exploration, explanation workflows, event-linked reasoning, and natural-language discovery into one polished co-pilot experience.
+        In plain words: it helps users understand the market faster, better, and with much more visual and analytical support than a typical stock tool.
+      </p>
+    </div>
+
+    <div class="brand-strip" style="margin-top:16px;">
+      <span>Prepared as an upgraded brochure-style PDF</span>
+      <span>Based on repo documentation and captured product screens</span>
+      <span>ET Alpha</span>
+    </div>
+
+    <div class="footer-note">
+      <span>Closing Summary</span>
+      <span>Page 07</span>
+    </div>
+  </section>
+</body>
+</html>
